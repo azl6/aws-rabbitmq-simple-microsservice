@@ -7,19 +7,27 @@ services:
     ports:
       - '8080:8080'
     container_name: song-request
+    depends_on:
+      - rabbitmq
 
   song-player:
     build: './song-player-microsservice'
     ports:
       - '8081:8081'
     container_name: song-player
+    depends_on:
+      - song-request
 
   rabbitmq:
-    image: rabbitmq:3-management
+    build: ./rabbitmq
     container_name: rabbitmq
+    hostname: "localhost"
     ports:
       - '15672:15672'
       - '5672:5672'
+      - '4369:4369'
+    environment:
+      - RABBITMQ_SERVER_ADDITIONAL_ERL_ARGS=-rabbitmq_management load_definitions "/app/rabbitmqdefinitions.json"
 
 
     
