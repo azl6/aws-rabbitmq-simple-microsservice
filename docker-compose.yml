@@ -1,0 +1,27 @@
+version: '3.9'
+
+services:
+
+  song-request:
+    build: './song-request-microsservice'
+    ports:
+      - '8080:8080'
+    container_name: song-request
+
+  song-player:
+    build: './song-player-microsservice'
+    ports:
+      - '8081:8081'
+    container_name: song-player
+
+  rabbitmq:
+    image: rabbitmq:3-management
+    container_name: rabbitmq
+    ports:
+      - '15672:15672'
+      - '5672:5672'
+
+
+    
+
+  

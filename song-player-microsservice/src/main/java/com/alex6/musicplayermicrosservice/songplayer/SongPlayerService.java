@@ -22,7 +22,9 @@ public class SongPlayerService {
     }
 
     private void playSong(SongRequest songRequest){
-        log.info("\nPlaying {}...", songRequest.getSong());
-        log.info("Requested by {}...\n", songRequest.getRequestedBy());
+        System.out.println("******************************************************");
+        System.out.println("Playing " + songRequest.getSong() + "...");
+        System.out.println("Requested by: " + songRequest.getRequestedBy());
+        System.out.println("******************************************************");
     }
 }
