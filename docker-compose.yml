@@ -2,6 +2,17 @@ version: '3.9'
 
 services:
 
+  rabbitmq:
+    build: ./rabbitmq
+    hostname: "localhost"
+    ports:
+      - '15672:15672'
+      - '5672:5672'
+      - '4369:4369'
+    container_name: rabbitmq
+    environment:
+      - RABBITMQ_SERVER_ADDITIONAL_ERL_ARGS=-rabbitmq_management load_definitions "/app/rabbitmqdefinitions.json"
+      
   song-request:
     build: './song-request-microsservice'
     ports:
@@ -16,19 +27,23 @@ services:
       - '8081:8081'
     container_name: song-player
     depends_on:
+      - rabbitmq
       - song-request
 
-  rabbitmq:
-    build: ./rabbitmq
-    container_name: rabbitmq
-    hostname: "localhost"
+  song-logs:
+    build: './song-logs-persistence-microsservice'
     ports:
-      - '15672:15672'
-      - '5672:5672'
-      - '4369:4369'
-    environment:
-      - RABBITMQ_SERVER_ADDITIONAL_ERL_ARGS=-rabbitmq_management load_definitions "/app/rabbitmqdefinitions.json"
+      - '8082:8082'
+    container_name: song-logs
+    depends_on:
+      - rabbitmq
+      - song-request
+      - song-player
 
+
+
+
+     
 
     
 
